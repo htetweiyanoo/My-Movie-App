@@ -1,20 +1,26 @@
 package net.myanmarlinks.retrofittest.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import net.myanmarlinks.retrofittest.model.Movie
+import net.myanmarlinks.retrofittest.model.Movies
+import net.myanmarlinks.retrofittest.network.ApiService
+import net.myanmarlinks.retrofittest.repository.MainRepository
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class MainViewModel : ViewModel() {
-//    fun getMemers() {
-//        val api = ApiService()
-//        val membersCall = api.getMembers()
-//        membersCall.enqueue(object: Callback<Members> {
-//            override fun onFailure(call: Call<Members>, t: Throwable) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onResponse(call: Call<Members>, response: Response<Members>) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//        } )
-//    }
+class MainViewModel(private val api: ApiService) : ViewModel() {
+
+    val movies: MutableLiveData<List<Movie>> = MutableLiveData()
+
+    fun onNotifyMovie(){
+        MainRepository(api).getMovies(movies)
+    }
+
+    val movieLD:MutableLiveData<List<Movie>>
+    get() = movies
+
+
 }
