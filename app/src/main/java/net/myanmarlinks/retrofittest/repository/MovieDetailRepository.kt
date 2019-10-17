@@ -2,23 +2,21 @@ package net.myanmarlinks.retrofittest.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import net.myanmarlinks.retrofittest.model.Movies
 import net.myanmarlinks.retrofittest.model.detail.MovieResponse
 import net.myanmarlinks.retrofittest.network.ApiService
-import net.myanmarlinks.retrofittest.network.interceptor.ApiDetailService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MovieDetailRepository (
-    private val api: ApiDetailService
+class MovieDetailRepository(
+    private val api: ApiService
 ) {
-    companion object{
+    companion object {
         const val TAG = "RetrofitTest"
     }
 
 
-    fun getDetail(movieId: Int, movieDetail : MutableLiveData<MovieResponse>){
+    fun getDetail(movieId: Int, movieDetail: MutableLiveData<MovieResponse>) {
         val language = "en-US"
         val moviedetailCall = api.getDetailMovies(movieId, language)
         moviedetailCall.enqueue(object : Callback<MovieResponse> {
@@ -28,10 +26,10 @@ class MovieDetailRepository (
 
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
 
-                if(response.isSuccessful){
-                    if(response.body() != null){
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
                         movieDetail.value = response.body()
-                        Log.d(TAG, "Movie_Retail_Repo " +response.body()!!.originalTitle)
+                        Log.d(TAG, "Movie_Retail_Repo " + response.body()!!.originalTitle)
                     }
                 }
             }

@@ -1,27 +1,22 @@
-package net.myanmarlinks.retrofittest.network.interceptor
+package net.myanmarlinks.retrofittest.network
 
 import android.content.Context
 import net.myanmarlinks.retrofittest.R
-import net.myanmarlinks.retrofittest.model.detail.MovieResponse
+import net.myanmarlinks.retrofittest.network.interceptor.ApiInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
-interface ApiDetailService {
+/**
+ * Created by Vincent on 2019-10-17
+ */
+object RetrofitProvider {
 
-    @GET("movie/{movie_id}")
-    fun getDetailMovies(
-        @Path("movie_id") movieId : Int,
-        @Query("language") language: String
-    ): Call<MovieResponse>
+    private var retrofit: Retrofit? = null
 
-    companion object {
-        operator fun invoke(context: Context): ApiDetailService {
+    fun retrofit(context: Context): Retrofit {
+        if (retrofit == null) {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
 
@@ -31,12 +26,14 @@ interface ApiDetailService {
 //                .addInterceptor(ConnectivityInterceptor(context))
                 .build()
 
-            return Retrofit.Builder()
+            retrofit = Retrofit.Builder()
                 .baseUrl(context.getString(R.string.api_endpoint))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
-                .create(ApiDetailService::class.java)
+
         }
+        return retrofit!!
     }
+
 }

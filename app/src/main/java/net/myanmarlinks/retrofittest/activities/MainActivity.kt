@@ -2,28 +2,26 @@ package net.myanmarlinks.retrofittest.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import net.myanmarlinks.retrofittest.R
 import net.myanmarlinks.retrofittest.adapter.MovieAdapter
 import net.myanmarlinks.retrofittest.model.Movie
-import net.myanmarlinks.retrofittest.network.ApiService
 import net.myanmarlinks.retrofittest.viewmodel.MainViewModel
 import net.myanmarlinks.retrofittest.viewmodel.MainViewModelFactory
-import java.util.ArrayList
+import java.util.*
 
 class MainActivity : AppCompatActivity(), MovieAdapter.OnItemClickedListener {
     override fun onItemClicked(movie: Movie) {
         val intent = Intent(this, MovieDetailActivity::class.java)
         val movieId = movie.id
-        intent.putExtra("MOVIE_ID",movieId)
+        intent.putExtra("MOVIE_ID", movieId)
         startActivity(intent)
     }
 
@@ -38,7 +36,6 @@ class MainActivity : AppCompatActivity(), MovieAdapter.OnItemClickedListener {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val api = ApiService(this)
         listMovies = ArrayList()
         movieAdapter = MovieAdapter(this, listMovies, this)
         movie_recycler.apply {
@@ -47,7 +44,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.OnItemClickedListener {
             adapter = movieAdapter
         }
 
-        viewModel = ViewModelProviders.of(this, MainViewModelFactory(api))
+        viewModel = ViewModelProviders.of(this, MainViewModelFactory())
             .get(MainViewModel::class.java)
 
         viewModel.onNotifyMovie()

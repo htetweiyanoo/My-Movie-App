@@ -10,19 +10,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import net.myanmarlinks.retrofittest.R
 import net.myanmarlinks.retrofittest.model.detail.MovieResponse
-import net.myanmarlinks.retrofittest.network.interceptor.ApiDetailService
 import net.myanmarlinks.retrofittest.viewmodel.DetailViewModel
 import net.myanmarlinks.retrofittest.viewmodel.DetailViewModelFactory
 
 
 class MovieDetailActivity : AppCompatActivity() {
 
-    val api by lazy {
-        ApiDetailService(this)
-    }
-
     val viewModel: DetailViewModel by lazy {
-        ViewModelProviders.of(this, DetailViewModelFactory(api = api))
+        ViewModelProviders.of(this, DetailViewModelFactory())
             .get(DetailViewModel::class.java)
     }
     lateinit var itemView: View
