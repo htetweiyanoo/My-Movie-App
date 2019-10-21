@@ -3,6 +3,8 @@ package net.myanmarlinks.retrofittest
 import android.content.Context
 import net.myanmarlinks.retrofittest.network.ApiService
 import net.myanmarlinks.retrofittest.network.interceptor.RetrofitProvider
+import net.myanmarlinks.retrofittest.repository.MovieDetailRepository
+import net.myanmarlinks.retrofittest.repository.MovieDetailRepositoryInterf
 
 object DependencyProvider {
     private var api: ApiService? = null
@@ -13,5 +15,9 @@ object DependencyProvider {
 
     fun getApiService(): ApiService {
         return api!!
+    }
+
+    fun getMovieDetailRepository(): MovieDetailRepositoryInterf {
+        return MovieDetailRepository(getApiService())
     }
 }

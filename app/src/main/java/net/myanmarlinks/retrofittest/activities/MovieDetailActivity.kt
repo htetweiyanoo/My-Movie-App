@@ -2,7 +2,6 @@ package net.myanmarlinks.retrofittest.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -37,7 +36,7 @@ class MovieDetailActivity : AppCompatActivity() {
         val movieId = intent.getIntExtra("MOVIE_ID", 0)
         setContentView(R.layout.movie_detail)
 
-        viewModel.movieDetail.observe(this,
+        viewModel.movieDetailLiveData.observe(this,
             Observer<MovieResponse> { t -> showMovieDetail(t!!) })
 
         viewModel.getDetail(movieId)

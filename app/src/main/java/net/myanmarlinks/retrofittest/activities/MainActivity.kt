@@ -18,13 +18,13 @@ import net.myanmarlinks.retrofittest.viewmodel.MainViewModelFactory
 import java.util.*
 
 class MainActivity : AppCompatActivity(), MovieAdapter.OnItemClickedListener {
+
     override fun onItemClicked(movie: Movie) {
         val intent = Intent(this, MovieDetailActivity::class.java)
         val movieId = movie.id
         intent.putExtra("MOVIE_ID", movieId)
         startActivity(intent)
     }
-
 
     lateinit var viewModel: MainViewModel
     lateinit var movieAdapter: MovieAdapter
