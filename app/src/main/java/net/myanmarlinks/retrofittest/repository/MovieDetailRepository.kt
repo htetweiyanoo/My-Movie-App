@@ -2,16 +2,14 @@ package net.myanmarlinks.retrofittest.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import net.myanmarlinks.retrofittest.model.Movies
 import net.myanmarlinks.retrofittest.model.detail.MovieResponse
 import net.myanmarlinks.retrofittest.network.ApiService
-import net.myanmarlinks.retrofittest.network.interceptor.ApiDetailService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MovieDetailRepository (
-    private val api: ApiDetailService
+    private val api: ApiService
 ) {
     companion object{
         const val TAG = "RetrofitTest"
