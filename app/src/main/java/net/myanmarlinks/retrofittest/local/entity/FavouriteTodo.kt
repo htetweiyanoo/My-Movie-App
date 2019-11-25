@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 
 @TypeConverters
-@Entity(tableName = "movie_db")
-data class Todo(
+@Entity(tableName = "favourite")
+data class FavouriteTodo(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,
@@ -19,7 +19,7 @@ data class Todo(
     val posterPath: String,
 
     @ColumnInfo(name = "voteAverage")
-    val voteAverage: Double,
+    val voteAverage: String,
 
     @ColumnInfo(name = "overview")
     val overview: String,
@@ -27,4 +27,3 @@ data class Todo(
     @ColumnInfo(name = "release_date")
     val releaseDate: String
 )
-

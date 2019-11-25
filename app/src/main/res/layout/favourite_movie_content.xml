@@ -10,13 +10,13 @@
     >
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/movie_swipe_view"
+        android:id="@+id/favourite_swipe_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_recycler"
+            android:id="@+id/favourite_movie_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbarStyle="outsideInset"

@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import net.myanmarlinks.retrofittest.local.entity.dao.TodoDao
+import net.myanmarlinks.retrofittest.local.dao.TodoDao
 
 @Database(
     entities = [Todo::class],
-    version = 1
+    version = 2
 )
 
 abstract class MovieDatabase : RoomDatabase() {
@@ -29,6 +29,7 @@ abstract class MovieDatabase : RoomDatabase() {
             Room.databaseBuilder(
                 context.applicationContext,
                 MovieDatabase::class.java, "movie_db.sqlite"
-            ).build()
+            )
+                .build()
     }
 }

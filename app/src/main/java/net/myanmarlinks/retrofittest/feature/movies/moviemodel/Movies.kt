@@ -1,4 +1,4 @@
-package net.myanmarlinks.retrofittest.model
+package net.myanmarlinks.retrofittest.movies.moviemodel
 
 import com.google.gson.annotations.SerializedName
 

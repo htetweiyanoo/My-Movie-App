@@ -1,8 +1,8 @@
-package net.myanmarlinks.retrofittest.model.trending
+package net.myanmarlinks.retrofittest.trendings.trending
 
 import com.google.gson.annotations.SerializedName
 
-data class Trendings(
+data class TrendingMovie(
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
