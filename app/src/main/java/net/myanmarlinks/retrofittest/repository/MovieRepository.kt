@@ -1,18 +1,21 @@
-package net.myanmarlinks.retrofittest.movies.repository
+package net.myanmarlinks.retrofittest.feature.movies.repository
 
 import android.util.Log
 import net.myanmarlinks.retrofittest.DependencyProvider
 import net.myanmarlinks.retrofittest.GenericCallBack
-import net.myanmarlinks.retrofittest.detail.DetailDataCallBack
-import net.myanmarlinks.retrofittest.detail.DetailDataState
-import net.myanmarlinks.retrofittest.detail.detailmodel.MovieResponse
+import net.myanmarlinks.retrofittest.feature.detail.DetailDataCallBack
+import net.myanmarlinks.retrofittest.feature.detail.DetailDataState
+import net.myanmarlinks.retrofittest.feature.detail.detailmodel.MovieResponse
+import net.myanmarlinks.retrofittest.feature.favourite.*
+import net.myanmarlinks.retrofittest.feature.movies.MovieListDataCallback
+import net.myanmarlinks.retrofittest.feature.movies.moviemodel.Movie
+import net.myanmarlinks.retrofittest.feature.movies.moviemodel.Movies
+import net.myanmarlinks.retrofittest.feature.trailer.MovieTrailerDataCallBack
+import net.myanmarlinks.retrofittest.feature.trailer.trailermodel.MovieTrailerList
+import net.myanmarlinks.retrofittest.feature.trendings.TrendingListDataCallback
+import net.myanmarlinks.retrofittest.feature.trendings.trending.TrendingMovies
 import net.myanmarlinks.retrofittest.local.entity.FavouriteTodo
 import net.myanmarlinks.retrofittest.local.entity.Todo
-import net.myanmarlinks.retrofittest.movies.MovieListDataCallback
-import net.myanmarlinks.retrofittest.movies.moviemodel.Movie
-import net.myanmarlinks.retrofittest.movies.moviemodel.Movies
-import net.myanmarlinks.retrofittest.trendings.TrendingListDataCallback
-import net.myanmarlinks.retrofittest.trendings.trending.TrendingMovies
 import org.jetbrains.anko.doAsync
 import retrofit2.Call
 import retrofit2.Callback
@@ -97,7 +100,7 @@ class MovieRepository(
 
     }
 
-    override fun insertFavouriteID(id: Int, callback : GenericCallBack<Unit>) {
+    override fun insertFavouriteID(id: Int, callback: GenericCallBack<Unit>) {
 
         executor.execute {
             val favId = database.toDoDao().insertToFavourite(FavouriteTodo(id))
@@ -105,6 +108,89 @@ class MovieRepository(
             callback.onSuccess(Unit)
         }
 
+    }
+
+    override fun deleteFavouriteMovie(
+        id: Int,
+        deleteFavouriteMovieDataCallBack: DeleteFavouriteMovieDataCallBack
+    ) {
+        executor.execute {
+            val deleteFavouriteMovie = database.toDoDao().deleteFavouriteMovie(id)
+        }
+    }
+
+    override fun getAllFavouriteMovie(favouriteCallBack: FavouriteDataCallBack) {
+
+        executor.execute {
+            val favouriteList: List<Todo> = database.toDoDao().getAllFavouriteMovie()
+            Log.d("Favourite_List", favouriteList.toString())
+            val _favouriteData = ArrayList<Todo>()
+
+            for (d in favouriteList) {
+                _favouriteData.add(
+//                    MovieResponse(
+//                        id = d.id,
+//                        originalTitle = d.title,
+//                        posterPath = d.posterPath,
+//                        voteAverage = d.voteAverage,
+//                        overview = d.overview,
+//                        releaseDate = d.releaseDate
+//                    )
+                    Todo(
+                        id = d.id,
+                        title = d.title,
+                        posterPath = d.posterPath,
+                        voteAverage = d.voteAverage,
+                        overview = d.overview,
+                        releaseDate = d.releaseDate
+                    )
+
+                )
+            }
+            favouriteCallBack.onFavouriteCallBack(FavouriteDataState.Success(_favouriteData))
+
+            Log.d("FAVOURITE_ERROR", "Movie_Favourite_Error")
+            favouriteCallBack.onFavouriteCallBack(FavouriteDataState.Failure(Throwable()))
+        }
+
+
+    }
+
+    override fun searchFavouriteIDResult(
+        id: Int,
+        favouriteIDResultDataCallBack: FavouriteIDResultDataCallBack
+    ) {
+        executor.execute {
+            val favdetailId = database.toDoDao().searchFavouriteMovie(id)
+            when (favdetailId) {
+                0 -> favouriteIDResultDataCallBack.onFavouriteIDResultDataCallBack(
+                    FavouriteIDResultDataState.Success(false)
+                )
+
+                1 -> favouriteIDResultDataCallBack.onFavouriteIDResultDataCallBack(
+                    FavouriteIDResultDataState.Success(true)
+                )
+            }
+
+        }
+    }
+
+    override fun getMovieTrailer(movieId: Int, trailerDataCallBack: MovieTrailerDataCallBack) {
+        val language = "en-US"
+        val movieTrailerCall =
+            api.getTrailer(movieId, language)
+        movieTrailerCall.enqueue(object : Callback<MovieTrailerList> {
+            override fun onFailure(call: Call<MovieTrailerList>, t: Throwable) {
+                Log.d("MY_API", "Failed to Trailer API")
+            }
+
+            override fun onResponse(
+                call: Call<MovieTrailerList>,
+                response: Response<MovieTrailerList>
+            ) {
+                trailerDataCallBack.onSuccess(response.body()!!.movieTrailerList)
+            }
+        })
     }
 
     override fun getMovieWithoutLiveData(movieListDataCallback: MovieListDataCallback) {
@@ -171,3 +257,4 @@ class MovieRepository(
         })
     }
 }
+
